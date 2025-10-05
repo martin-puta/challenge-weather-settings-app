@@ -1,0 +1,546 @@
+/* ========================================================= */
+/* --- 1. Variables de Couleur et de Typographie (Base) --- */
+/* ========================================================= */
+:root {
+    --dark-bg: #2c3e50;       /* Fond principal très sombre */
+    --card-bg: #1e1e2d;       /* Fond des cartes/panneaux */
+    --text-color: #f0f0f0;    /* Texte principal blanc cassé */
+    --secondary-text: #a0a0b0; /* Texte secondaire gris clair */
+    --accent-color: #3b82f6;  /* Bleu vif pour les actions/boutons */
+    --error-color: #ef4444;   /* Rouge pour les erreurs */
+    --border-color: rgba(255, 255, 255, 0.1); /* Ligne de séparation subtile */
+    --font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ========================================================= */
+/* --- 2. Conteneur Global et États --- */
+/* ========================================================= */
+
+.weather-app {
+    font-family: var(--font-family);
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+    padding: 30px; /* Augmenté légèrement */
+    border-radius: 16px; /* Arrondi plus doux */
+    max-width: 1200px;
+    margin: 40px auto; /* Centrage vertical et horizontal */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Ombre légère pour l'effet de profondeur */
+}
+
+/* Messages d'état */
+.loading, .error, .no-data {
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+}
+.error {
+    color: var(--error-color);
+    font-weight: bold;
+}
+.search-error {
+    color: var(--error-color);
+    margin-top: -10px;
+    margin-bottom: 15px;
+    padding: 5px 15px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* ========================================================= */
+/* --- 3. Barre de Recherche (Search Bar) --- */
+/* ========================================================= */
+
+.search-barre {
+    display: flex;
+    gap: 10px;
+    background-color: var(--card-bg);
+    padding: 18px; 
+    border-radius: 12px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+.search-barre input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    padding: 10px 15px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-barre button {
+    background-color: var(--accent-color);
+    border: none;
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s;
+}
+
+.search-bare button:hover {
+    background-color: #2563eb;
+}
+
+/* ========================================================= */
+/* --- 4. Grille Principale (Main Content) --- */
+/* ========================================================= */
+
+.main-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Panneau gauche plus large */
+    gap: 20px;
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ========================================================= */
+/* --- 5. Info Principale (Current Weather) --- */
+/* ========================================================= */
+
+.main-info {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.main-info h2 {
+    margin: 0 0 5px 0;
+    font-size: 36px;
+}
+
+.main-info .rain-chance {
+    color: var(--secondary-text);
+    margin-bottom: 25px;
+}
+
+.temp-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.current-temp {
+    font-size: 100px; /* Plus grand pour l'effet "WOW" */
+    font-weight: 300; /* Léger */
+    line-height: 1;
+}
+
+.main-icon {
+    font-size: 120px; 
+    filter: drop-shadow(0 0 15px rgba(255, 255, 0, 0.4));
+}
+
+/* ========================================================= */
+/* --- 6. Prévisions Horaires --- */
+/* ========================================================= */
+
+.hourly-forecast-container {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.hourly-forecast-container h3 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: var(--secondary-text);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.hourly-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    text-align: center;
+    gap: 10px;
+}
+
+.hourly-item {
+    padding: 10px 5px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.hourly-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.hourly-item .icon {
+    font-size: 30px;
+    display: block;
+    margin: 8px 0;
+}
+.hourly-item .time, .hourly-item .temp {
+    margin: 0;
+}
+.hourly-item .time {
+    color: var(--secondary-text);
+    font-size: 0.85rem;
+}
+.hourly-item .temp {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* ========================================================= */
+/* --- 7. Conditions Aériennes (Details) --- */
+/* ========================================================= */
+
+.air-conditions-container {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.air-conditions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.air-conditions-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--secondary-text);
+    text-transform: uppercase;
+}
+
+.see-more {
+    background-color: rgba(59, 130, 246, 0.2);
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.see-more:hover {
+    background-color: rgba(59, 130, 246, 0.3);
+}
+
+.air-conditions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.condition-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.condition-item .label {
+    color: var(--secondary-text);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.condition-item .value {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* ========================================================= */
+/* --- 8. Prévisions 7 Jours (Right Panel) --- */
+/* ========================================================= */
+
+.right-panel {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.right-panel h3 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: var(--secondary-text);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.seven-day-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.day-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.day-item:last-child {
+    border-bottom: none;
+}
+
+.day-name {
+    flex-basis: 20%;
+    font-weight: bold;
+}
+
+.day-icon {
+    font-size: 22px;
+    flex-basis: 10%;
+    text-align: center;
+}
+
+.day-status {
+    flex-basis: 45%;
+    text-align: left;
+    color: var(--secondary-text);
+    font-size: 0.95rem;
+}
+
+.day-temps {
+    flex-basis: 25%;
+    text-align: right;
+    font-size: 1.1rem;
+}
+
+.max-temp {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.min-temp {
+    color: var(--secondary-text);
+    margin-left: 5px;
+}
+/* ========================================================= */
+/* --- 3. Barre de Recherche (Search Bar) --- */
+/* ========================================================= */
+
+.search-barre input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    /* ANCIEN: padding: 10px 15px; */
+    padding: 10px 15px 10px 15px; /* Haut Droite Bas Gauche (ou utiliser un padding-left) */
+    
+    /* NOUVELLE RÈGLE CLAIRE ET PRÉCISE POUR AJOUTER DE L'ESPACE À GAUCHE */
+    padding-left: 15px; /* Vous pouvez augmenter cette valeur si vous voulez plus d'espace */
+
+    font-size: 16px;
+    outline: none;
+}
+/* ========================================================= */
+/* --- 9. Réactivité (Media Queries) --- */
+/* ========================================================= */
+/* ========================================================= */
+/* --- 9. Réactivité (Media Queries) --- */
+/* ========================================================= */
+
+/* --- TABLETTES et Petits PC (max 992px) --- */
+@media (max-width: 992px) {
+    .main-content-grid {
+        /* Les panneaux Gauche et Droit s'empilent sur une seule colonne */
+        grid-template-columns: 1fr; 
+    }
+
+    .weather-app {
+        /* Moins de marge et de padding pour optimiser l'espace vertical */
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 90%; /* Assure une bonne prise d'espace sur tablette */
+    }
+
+    /* Réduit l'icône principale pour éviter qu'elle ne prenne trop de place */
+    .main-icon {
+        font-size: 100px;
+    }
+}
+
+/* --- TÉLÉPHONES (max 600px) --- */
+@media (max-width: 600px) {
+    /* Ajustements généraux pour le mode "pleine page" mobile */
+    .weather-app {
+        margin: 0;
+        padding: 15px;
+        border-radius: 0; /* Pleine largeur et hauteur sur mobile */
+        max-width: 100%;
+    }
+
+    /* Réduit la police de la température principale */
+    .current-temp {
+        font-size: 70px;
+    }
+    
+    /* Le conteneur horaire passe à 3 colonnes pour une meilleure lisibilité */
+    .hourly-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px; /* Ajustement du gap */
+    }
+
+    /* Le grid des conditions de l'air reste à 2 colonnes mais avec moins d'espace */
+    .air-conditions-grid {
+        gap: 10px;
+    }
+    
+    .condition-item .value {
+        font-size: 1.2rem;
+    }
+
+    /* Prévisions 7 jours : Cache la description (day-status) pour gagner de la place */
+    .day-status {
+        display: none; 
+    }
+
+    /* Réaligne les autres éléments de la liste des 7 jours */
+    .day-name {
+        flex-basis: 40%;
+    }
+
+    .day-temps {
+        flex-basis: 40%;
+    }
+}
+
+/* --- TRÈS PETITS ÉCRANS / MODE PAYSAGE (max 400px) --- */
+@media (max-width: 400px) {
+    /* Réduction du padding général pour optimiser l'espace */
+    .weather-app {
+        padding: 10px;
+    }
+
+    /* Barre de Recherche : Input et Bouton sont plus compacts */
+    .search-barre {
+        padding: 5px;
+    }
+    .search-barre button {
+        padding: 8px 12px; /* Rendre le bouton plus petit */
+        font-size: 16px;
+    }
+    .search-barre input {
+        padding: 8px 10px;
+    }
+
+    /* Panneau d'Info Principale : Passe la température et l'icône l'une en dessous de l'autre */
+    .temp-section {
+        flex-direction: column;
+        align-items: flex-start; /* Aligne tout à gauche */
+    }
+    
+    .current-temp {
+        font-size: 60px; /* Encore plus petit */
+    }
+    
+    .main-icon {
+        font-size: 70px; /* Plus petit */
+        margin-top: -10px; /* Rapproche l'icône du texte */
+    }
+
+    /* Le grid des conditions de l'air s'empile en 1 colonne pour éviter un chevauchement */
+    .air-conditions-grid {
+        grid-template-columns: 1fr; 
+    }
+    
+    /* Prévisions horaires: Passe à 2 colonnes pour les écrans très étroits */
+    .hourly-grid {
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 5px;
+    }
+    
+    /* Prévisions 7 jours : Réduit encore la taille des polices */
+    .day-name, .day-temps {
+        font-size: 0.9rem;
+    }
+
+    .day-icon {
+        font-size: 18px; /* Réduit la taille de l'icône */
+    }
+}
+
+/* --- TRÈS PETITS ÉCRANS / MODE PAYSAGE (max 480px) --- */
+@media (max-width: 480px) {
+    /* ... (autres styles) ... */
+    
+    /* Barre de Recherche : Input et Bouton sont plus compacts */
+    .search-barre {
+        padding: 5px; /* Réduit l'espace autour du contenu de la barre */
+    }
+    .search-barre button {
+        padding: 8px 15px; /* Réduit le padding du bouton */
+        font-size: 16px;
+    }
+    .search-barre input {
+        padding: 8px 10px; /* Réduit le padding de l'input */
+    }
+    
+    /* ... (autres styles) ... */
+}
+/* TRÈS PETITS ÉCRANS (max 400px) */
+@media (max-width: 400px) {
+    /* ... */
+    .search-barre input {
+        /* Assurez-vous que le padding gauche reste suffisant */
+        padding: 8px 10px 8px 12px; 
+        margin-right: 25px;
+    }
+    /* ... */
+}
+/* ========================================================= */
+/* --- 9. Réactivité (Media Queries) --- */
+/* ========================================================= */
+
+/* --- TÉLÉPHONES (max 600px) --- */
+@media (max-width: 600px) {
+    
+    /* Ajustements généraux pour le mode "pleine page" mobile */
+    .weather-app {
+        margin: 0;
+        padding: 15px;
+        border-radius: 0; 
+        max-width: 100%;
+        
+        /* 💡 MODIFICATION CLÉ : Ajouter l'espace pour le bouton hamburger */
+        /* Le bouton est à 15px du haut et 15px de gauche, avec un padding d'environ 40px */
+        padding-top: 0px; /* Espace pour ne pas cacher le contenu sous le bouton */
+        padding-left: 60px; /* Marge à gauche pour laisser le bouton visible/cliquable */
+    }
+    
+    /* Assurez-vous que l'input lui-même (qui est à l'intérieur) n'ajoute pas un padding inutile */
+    .search-barre {
+        /* On retire la marge de gauche pour éviter un double espacement avec le padding du .weather-app */
+        margin-left: 0; 
+    }
+    
+    /* ... (le reste de vos styles pour max-width: 600px) ... */
+}
+
+/* --- TRÈS PETITS ÉCRANS / MODE PAYSAGE (max 400px) --- */
+@media (max-width: 400px) {
+    /* ... (autres styles) ... */
+    
+    /* Si le padding de 60px est trop grand ou trop petit, vous pouvez l'ajuster ici */
+    .weather-app {
+        padding-top: 50px; /* Légèrement moins si l'écran est petit */
+        padding-left: 50px;
+    }
+    
+    /* ... (le reste de vos styles pour max-width: 400px) ... */
+}

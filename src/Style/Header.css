@@ -1,0 +1,180 @@
+/* Header.css - Styles Responsifs pour la Sidebar */
+
+/* --- 1. GÉNÉRAL ET BODY (DESKTOP PAR DÉFAUT) --- */
+
+/* Décale tout le contenu de la page pour éviter qu'il ne soit masqué sous la barre latérale fixe (Desktop) */
+body {
+    padding-left: 90px; /* Largeur par défaut de la sidebar */
+    margin: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    transition: padding-left 0.3s ease; /* Transition pour une meilleure expérience utilisateur */
+}
+
+/* --- 2. SIDEBAR (.nav-header) --- */
+.nav-header {
+    background-color: #2c3e50; 
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.4); 
+    
+    /* Propriétés par défaut (DESKTOP) */
+    width: 90px; 
+    height: 100vh; 
+    padding: 20px 0;
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 1000; 
+    border-radius: 0 10px 10px 0; 
+    
+    /* Transition pour l'ouverture/fermeture sur mobile */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- 3. MOBILE MENU TOGGLE (Bouton Hamburger) --- */
+.mobile-menu-toggle {
+    display: none; /* Masqué par défaut (Desktop) */
+    position: fixed;
+    top: 15px;
+    
+    /* MODIFICATION CLÉ : Réduit 'left' de 15px à 5px pour le pousser vers le bord */
+    left: 5px; 
+    
+    z-index: 1010; /* Au-dessus de tout */
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+/* --- 4. OVERLAY (Fond derrière la sidebar ouverte sur mobile) --- */
+.mobile-overlay {
+    display: none; /* Masqué par défaut (Desktop) */
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* -------------------- RESPONSIVE : PETITS ÉCRANS ---------------------- */
+/* ---------------------------------------------------------------------- */
+
+/* Appliqué aux écrans de 768px ou moins (tablettes et mobiles) */
+@media (max-width: 768px) {
+    
+    /* Retire le décalage pour que le contenu prenne toute la largeur */
+    body {
+        padding-left: 0;
+    }
+    
+    /* Affiche le bouton hamburger */
+    .mobile-menu-toggle {
+        display: block; 
+    }
+
+    /* La sidebar est masquée par défaut (glisse hors de l'écran) */
+    .nav-header {
+        transform: translateX(-100%);
+        box-shadow: none; /* Retirer l'ombre quand masquée */
+    }
+
+    /* La classe 'open' est ajoutée par React pour l'afficher */
+    .nav-header.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.4);
+    }
+    
+    /* Affiche l'overlay lorsque le menu est ouvert */
+    .mobile-overlay {
+        display: block; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+        z-index: 999; /* Juste en dessous de la sidebar */
+    }
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* ------------------------- STYLES DE LA SIDEBAR ----------------------- */
+/* Ces styles restent constants quelle que soit la taille d'écran. */
+/* ---------------------------------------------------------------------- */
+
+.nav-top-icon {
+    font-size: 2.5rem;
+    color: #3498db; 
+    text-align: center;
+    margin-bottom: 40px; 
+}
+
+.nav-container {
+    max-width: none;
+    margin: 0; 
+    padding: 0; 
+    display: block;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column; 
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center; 
+}
+
+.nav-item {
+    width: 100%;
+    margin-left: 0; 
+    margin-bottom: 35px; 
+    text-align: center;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    color: #ecf0f1; 
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #ffffff; 
+    background-color: rgba(0, 0, 0, 0.1); /* Léger fond au survol */
+}
+
+.nav-icon {
+    font-size: 2rem; 
+    color: #ecf0f1; 
+    margin-bottom: 5px;
+}
+
+.nav-text {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #95a5a6; 
+}
+
+/* Style pour l'élément actif */
+.nav-link.active {
+    background-color: #3498db; /* Fond bleu pour l'actif */
+    border-left: 5px solid #ffffff; /* Ligne de démarcation */
+    padding-left: 5px;
+}
+
+.nav-link.active .nav-icon {
+    color: #ffffff; 
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.nav-link.active .nav-text {
+    color: #ecf0f1; 
+    font-weight: bold;
+}

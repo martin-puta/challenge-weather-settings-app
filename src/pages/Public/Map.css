@@ -1,0 +1,557 @@
+/* --- Variables CSS --- */
+:root {
+  --app-wm-bg-dark: #12121e; /* Fond principal très sombre */
+  --app-wm-card-dark: #1e1e2c; /* Couleur des cartes de la liste et de la carte */
+  --app-wm-text-light: #ffffff; 
+  --app-wm-text-secondary: #aaaaaa; 
+  --app-wm-color-rain: #8fb3e8; /* Bleu pluie/Bilbao */
+  --app-wm-color-sun: #ffd700; /* Jaune soleil */
+  --app-wm-color-hot: #f57f17; /* Orange pour les températures élevées (Madrid/Malaga) */
+  --app-wm-map-bg: #9ec189; /* Vert clair de la carte */
+  --app-wm-blue-button: #3b82f6; /* Bouton Done */
+  --app-wm-mobile-margin: 15px; /* Marge mobile */
+  --app-wm-tablet-margin: 20px; /* Marge tablette */
+  --app-wm-desktop-margin: 20px; /* Marge desktop */
+}
+
+/* --- Styles Généraux / Conteneur --- */
+.app-weather-map-ui-main-container {
+  display: flex;
+  flex-direction: column;
+  width: 90vw;
+  max-width: 1400px;
+  min-height: 800px;
+  height: 90vh;
+  margin: var(--app-wm-desktop-margin) auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.app-weather-map-ui-loading-error-state {
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    padding: 50px;
+}
+
+.app-weather-map-ui-error {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    text-align: center;
+    color: #ff5555;
+}
+
+.app-weather-map-ui-retry-button {
+    background-color: #ff5555;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* --- EN-TÊTE --- */
+.app-weather-map-ui-application-header {
+  padding: 15px 20px;
+  background-color: var(--app-wm-bg-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--app-wm-card-dark);
+}
+
+.app-weather-map-ui-location-filter-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--app-wm-text-light);
+}
+
+.app-weather-map-ui-last-update,
+.app-weather-map-ui-refresh-button {
+    font-size: 0.9rem;
+    color: var(--app-wm-text-secondary);
+    margin-left: 20px;
+}
+
+.app-weather-map-ui-refresh-button {
+    background: none;
+    border: 1px solid var(--app-wm-text-secondary);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* --- CONTENU PRINCIPAL WRAPPER --- */
+.app-weather-map-ui-content-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+/* --- 1. PANNEAU CARTE (GAUCHE) --- */
+.app-weather-map-ui-map-visualization-panel {
+  flex: 3;
+  position: relative;
+  background-color: var(--app-wm-map-bg); /* Couleur de la carte */
+  overflow: hidden;
+}
+
+.app-weather-map-ui-map-background-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Bouton Done */
+.app-weather-map-ui-done-navigation-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: var(--app-wm-blue-button); 
+  color: var(--app-wm-text-light);
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  z-index: 10;
+}
+
+/* Contrôles Zoom */
+.app-weather-map-ui-map-zoom-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-weather-map-ui-map-zoom-buttons {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--app-wm-card-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.app-weather-map-ui-map-zoom-controls button {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  color: var(--app-wm-text-light);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.app-weather-map-ui-map-zoom-controls button:last-child {
+    border-bottom: none;
+}
+
+.app-weather-map-ui-map-center-button {
+    width: 30px;
+    height: 30px;
+    background-color: var(--app-wm-card-dark) !important;
+    border-radius: 5px !important;
+    font-size: 0.8rem !important;
+}
+
+/* --- Cartes sur la carte --- */
+.app-weather-map-ui-on-map-card {
+    position: absolute;
+    background-color: var(--app-wm-card-dark);
+    color: var(--app-wm-text-light);
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 1rem;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Style Flexbox pour aligner nom/icône/temp verticalement/horizontalement */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: auto;
+}
+
+.app-weather-map-ui-map-card-icon {
+    font-size: 1.5rem;
+}
+.app-weather-map-ui-map-card-temp {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.app-weather-map-ui-map-card-name {
+    font-size: 0.8rem;
+    color: var(--app-wm-text-secondary);
+    margin-top: 5px;
+}
+
+/* Positionnement SIMULÉ des cartes (Basé sur l'image) */
+.app-weather-map-ui-on-map-bilbao {
+    top: 15%; left: 20%;
+    border: 2px solid var(--app-wm-color-rain);
+    
+}
+.app-weather-map-ui-on-map-barcelona {
+    top: 35%; right: 10%;
+    border: 2px solid var(--app-wm-color-sun);
+    /* Pour simuler l'affichage décalé de Barcelone sur l'image */
+    flex-direction: row;
+    gap: 10px;
+    padding: 15px;
+}
+.app-weather-map-ui-on-map-madrid {
+    top: 55%; left: 15%;
+    border: 2px solid var(--app-wm-color-sun);
+    padding-bottom: 5px; 
+}
+.app-weather-map-ui-on-map-malaga {
+    bottom: 10%; left: 35%;
+    border: 2px solid var(--app-wm-color-hot);
+}
+
+.app-weather-map-ui-detail-view-button {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--app-wm-text-light);
+    border: none;
+    padding: 4px 8px;
+    margin-top: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+/* --- 2. PANNEAU DE LISTE DE VILLES (DROITE) --- */
+.app-weather-map-ui-city-list-detail-panel {
+  flex: 1.5;
+  background-color: var(--app-wm-bg-dark);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* --- CARTE MÉTÉO DANS LA LISTE --- */
+.app-weather-map-ui-city-detail-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--app-wm-card-dark);
+  padding: 15px;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.app-weather-map-ui-city-detail-card:hover {
+    background-color: #242436; /* Légèrement plus clair au survol */
+}
+
+.app-weather-map-ui-card-primary-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-weather-map-ui-weather-icon {
+  font-size: 1.5rem;
+}
+
+.app-weather-map-ui-time-stamp {
+  font-size: 0.9rem;
+  color: var(--app-wm-text-secondary);
+}
+
+.app-weather-map-ui-city-temperature-data {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.app-weather-map-ui-city-name-label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.app-weather-map-ui-temperature-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Styles pour les couleurs de température */
+/* Utilisation de nth-child pour simuler les couleurs de l'image si les données ne sont pas dynamiques */
+.app-weather-map-ui-city-detail-card:nth-child(1) .app-weather-map-ui-weather-icon {
+    color: var(--app-wm-color-rain); /* Bilbao - Pluie */
+}
+.app-weather-map-ui-city-detail-card:nth-child(2) .app-weather-map-ui-weather-icon,
+.app-weather-map-ui-city-detail-card:nth-child(3) .app-weather-map-ui-weather-icon,
+.app-weather-map-ui-city-detail-card:nth-child(4) .app-weather-map-ui-weather-icon {
+    color: var(--app-wm-color-sun); /* Autres - Soleil / Nuages */
+}
+
+/* Styles de couleur de texte de température */
+.app-weather-map-ui-city-detail-card:nth-child(1) .app-weather-map-ui-temperature-value {
+    color: var(--app-wm-text-light); 
+}
+.app-weather-map-ui-city-detail-card:nth-child(2) .app-weather-map-ui-temperature-value {
+    color: var(--app-wm-text-light); 
+}
+.app-weather-map-ui-city-detail-card:nth-child(3) .app-weather-map-ui-temperature-value,
+.app-weather-map-ui-city-detail-card:nth-child(4) .app-weather-map-ui-temperature-value {
+    color: var(--app-wm-text-light); /* Toutes les températures sont blanches dans la liste de droite, seulement l'icône change */
+}
+
+/* --- RESPONSIVE DESIGN AVEC MEDIA QUERIES --- */
+
+/* ------------------------------------------- */
+/* --- 1. Pour les Tablettes et petits Desktops (max-width: 1024px) --- */
+/* ------------------------------------------- */
+@media (max-width: 1024px) {
+    /* Conteneur principal: Ajustement de la taille avec marges préservées */
+    .app-weather-map-ui-main-container {
+        width: calc(100vw - 2 * var(--app-wm-tablet-margin));
+        max-width: 1000px;
+        margin: var(--app-wm-tablet-margin) auto;
+        min-height: initial;
+        height: auto;
+        max-height: 95vh;
+    }
+
+    /* En-tête : Réduction de la marge pour les éléments et taille de police */
+    .app-weather-map-ui-location-filter-label {
+        font-size: 1rem;
+    }
+    .app-weather-map-ui-last-update,
+    .app-weather-map-ui-refresh-button {
+        font-size: 0.8rem;
+        margin-left: 10px;
+    }
+
+    /* Panneaux : Ajustement des proportions */
+    .app-weather-map-ui-map-visualization-panel {
+        flex: 2;
+    }
+    .app-weather-map-ui-city-list-detail-panel {
+        flex: 1;
+        min-width: 300px;
+        padding: 15px;
+    }
+    
+    /* Bouton Done: Rendre moins intrusif */
+    .app-weather-map-ui-done-navigation-button {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    /* Ajustement des cartes sur la carte pour tablette */
+    .app-weather-map-ui-on-map-card {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+
+    .app-weather-map-ui-map-card-icon {
+        font-size: 1.3rem;
+    }
+    .app-weather-map-ui-map-card-temp {
+        font-size: 1.1rem;
+    }
+}
+
+/* ------------------------------------------- */
+/* --- 2. Pour les Téléphones (max-width: 768px) --- */
+/* ------------------------------------------- */
+@media (max-width: 768px) {
+    /* Conteneur principal : Empilement des panneaux avec marges préservées */
+    .app-weather-map-ui-main-container {
+        flex-direction: column;
+        width: calc(100vw - 2 * var(--app-wm-mobile-margin));
+        height: auto;
+        min-height: calc(100vh - 2 * var(--app-wm-mobile-margin));
+        margin: var(--app-wm-mobile-margin) auto;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* En-tête : Empilement des éléments ou centrage */
+    .app-weather-map-ui-application-header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .app-weather-map-ui-last-update,
+    .app-weather-map-ui-refresh-button {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    /* Contenu principal : Passage obligatoire en colonne */
+    .app-weather-map-ui-content-wrapper {
+        flex-direction: column;
+    }
+    
+    /* 1. Panneau Carte (Devient le premier élément, prend toute la largeur) */
+    .app-weather-map-ui-map-visualization-panel {
+        flex: none;
+        height: 300px;
+        min-height: 300px;
+        width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    /* Les cartes sur la carte : Positionnement statique et taille réduite */
+    .app-weather-map-ui-on-map-card {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+        max-width: 100px;
+    }
+
+    .app-weather-map-ui-map-card-icon {
+        font-size: 1.1rem;
+    }
+    .app-weather-map-ui-map-card-temp {
+        font-size: 0.9rem;
+    }
+    .app-weather-map-ui-map-card-name {
+        font-size: 0.65rem;
+    }
+    
+    /* Ajustement spécifique des positions des cartes pour mobile */
+    .app-weather-map-ui-on-map-bilbao {
+        top: 10%; left: 10%;
+    }
+    .app-weather-map-ui-on-map-barcelona {
+        top: 30%; right: 5%;
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px;
+    }
+    .app-weather-map-ui-on-map-madrid {
+        top: 50%; left: 10%;
+    }
+    .app-weather-map-ui-on-map-malaga {
+        bottom: 15%; left: 25%;
+    }
+    
+    /* Bouton Done: Déplacement en bas à gauche de la carte */
+    .app-weather-map-ui-done-navigation-button {
+        top: initial;
+        bottom: 10px;
+        left: 10px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    /* Contrôles Zoom : Rendre plus discrets */
+    .app-weather-map-ui-map-zoom-controls {
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .app-weather-map-ui-map-zoom-controls button {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+
+    /* 2. Panneau de Liste de Villes (Devient le deuxième élément, prend toute la largeur) */
+    .app-weather-map-ui-city-list-detail-panel {
+        flex: none;
+        width: 100%;
+        padding: 15px;
+        border-radius: 0 0 8px 8px;
+    }
+
+    /* Cartes de la liste : Ajustement de la taille de police et padding */
+    .app-weather-map-ui-city-detail-card {
+        padding: 12px;
+    }
+    
+    .app-weather-map-ui-city-temperature-data {
+        gap: 5px;
+    }
+
+    .app-weather-map-ui-temperature-value {
+        font-size: 1.5rem;
+    }
+
+    .app-weather-map-ui-city-name-label {
+        font-size: 0.9rem;
+    }
+
+    .app-weather-map-ui-weather-icon {
+        font-size: 1.3rem;
+    }
+}
+
+/* ------------------------------------------- */
+/* --- 3. Pour les très petits téléphones (max-width: 480px) --- */
+/* ------------------------------------------- */
+@media (max-width: 480px) {
+    :root {
+        --app-wm-mobile-margin: 10px;
+    }
+
+    .app-weather-map-ui-main-container {
+        width: calc(100vw - 2 * var(--app-wm-mobile-margin));
+        margin: var(--app-wm-mobile-margin) auto;
+        border-radius: 8px;
+    }
+
+    .app-weather-map-ui-application-header {
+        padding: 12px;
+    }
+
+    .app-weather-map-ui-location-filter-label {
+        font-size: 0.9rem;
+    }
+
+    .app-weather-map-ui-map-visualization-panel {
+        height: 250px;
+        min-height: 250px;
+    }
+
+    .app-weather-map-ui-on-map-card {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+        max-width: 85px;
+    }
+
+    .app-weather-map-ui-map-card-icon {
+        font-size: 1rem;
+    }
+    .app-weather-map-ui-map-card-temp {
+        font-size: 0.8rem;
+    }
+    .app-weather-map-ui-map-card-name {
+        font-size: 0.6rem;
+    }
+
+    .app-weather-map-ui-city-list-detail-panel {
+        padding: 10px;
+    }
+
+    .app-weather-map-ui-city-detail-card {
+        padding: 10px;
+    }
+
+    .app-weather-map-ui-temperature-value {
+        font-size: 1.3rem;
+    }
+
+    .app-weather-map-ui-city-name-label {
+        font-size: 0.85rem;
+    }
+}

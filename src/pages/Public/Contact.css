@@ -1,0 +1,313 @@
+
+:root {
+    --settings-bg-dark: #12121e;        /* Fond principal très sombre */
+    --settings-card-dark: #1e1e2c;      /* Couleur des cartes et sections */
+    --settings-text-light: #ffffff;
+    --settings-text-secondary: #aaaaaa; /* Texte gris clair */
+    --settings-accent-blue: #3b82f6;    /* Couleur d'accentuation (boutons, switch) */
+    --settings-price-orange: #f57f17;   /* Orange/Jaune pour le prix */
+}
+
+/* --- Général --- */
+
+.app-weather-settings-main-container {
+    display: flex;
+    width: 90vw;
+    max-width: 1200px;
+    margin: 40px auto;
+    gap: 30px;
+}
+
+.app-weather-settings-left-panel {
+    flex: 3; 
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.app-weather-settings-right-panel {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.app-weather-settings-panel-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--settings-text-light);
+}
+
+/* --- Sélecteurs d'Unités (Gauche) --- */
+.app-weather-settings-unit-section {
+    background-color: var(--settings-card-dark);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-weather-settings-section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--settings-text-secondary);
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+}
+
+.app-weather-settings-unit-buttons-wrapper {
+    display: flex;
+    /* Met le texte de l'unité sur la gauche et l'ensemble des boutons sur la droite */
+    justify-content: flex-end; 
+    gap: 5px;
+}
+
+.app-weather-settings-unit-button {
+    background-color: transparent;
+    color: var(--settings-text-secondary);
+    border: 1px solid var(--settings-text-secondary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    min-width: 80px;
+    transition: all 0.2s;
+}
+
+.app-weather-settings-unit-button:hover:not(.app-weather-settings-unit-button-active) {
+    border-color: var(--settings-accent-blue);
+    color: var(--settings-accent-blue);
+}
+
+.app-weather-settings-unit-button-active {
+    background-color: var(--settings-accent-blue);
+    color: var(--settings-text-light);
+    border-color: var(--settings-accent-blue);
+    font-weight: 600;
+}
+
+/* --- Section Notifications --- */
+.app-weather-settings-notification-section {
+    background-color: var(--settings-card-dark);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.app-weather-settings-notification-toggle-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-weather-settings-notification-label {
+    font-size: 0.9rem;
+    color: var(--settings-text-secondary);
+}
+
+/* Style du Toggle (Switch) */
+.app-weather-settings-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+.app-weather-settings-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.app-weather-settings-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+.app-weather-settings-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .app-weather-settings-slider {
+  background-color: var(--settings-accent-blue);
+}
+input:checked + .app-weather-settings-slider:before {
+  transform: translateX(16px);
+}
+
+
+/* --- Cartes de Droite (Advanced et Newsletter) --- */
+/* Carte Avancée */
+.app-weather-settings-advanced-card {
+    background-color: var(--settings-card-dark);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.app-weather-settings-advanced-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+}
+
+.app-weather-settings-new-experience-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.app-weather-settings-feature-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    font-size: 0.9rem;
+    color: var(--settings-text-secondary);
+}
+.app-weather-settings-feature-list li::before {
+    content: "•";
+    color: var(--settings-text-secondary); 
+    display: inline-block; 
+    width: 1em;
+    margin-left: -1em;
+}
+
+.app-weather-settings-price-box {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-weather-settings-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--settings-price-orange);
+}
+
+.app-weather-settings-price-suffix {
+    font-size: 1rem;
+    color: var(--settings-text-secondary);
+    margin-left: 5px;
+}
+
+
+/* Carte Newsletter */
+.app-weather-settings-newsletter-card {
+    background-color: var(--settings-card-dark);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.app-weather-settings-newsletter-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0;
+}
+
+.app-weather-settings-newsletter-description {
+    font-size: 0.9rem;
+    color: var(--settings-text-secondary);
+    margin-bottom: 20px;
+}
+
+.app-weather-settings-signup-button {
+    background-color: var(--settings-accent-blue);
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.app-weather-settings-signup-button:hover {
+    background-color: #316fb8;
+}
+/*
+ * RESPONSIVE DESIGN
+ * Ajout des Media Queries pour l'adaptation aux différentes tailles d'écran
+ */
+
+/* --- Tablette (max-width: 900px) --- */
+@media (max-width: 900px) {
+    .app-weather-settings-main-container {
+        /* On retire la disposition en colonne pour empiler les éléments */
+        flex-direction: column;
+        width: 95vw; /* On élargit un peu pour utiliser plus d'espace */
+        margin: 20px auto; /* Marge réduite sur mobile/tablette */
+        gap: 20px;
+    }
+
+    /* Les panneaux prennent toute la largeur disponible */
+    .app-weather-settings-left-panel,
+    .app-weather-settings-right-panel {
+        flex: 1 1 100%; /* S'étale sur 100% de la largeur */
+    }
+
+    /* Le titre principal est centré et légèrement plus petit */
+    .app-weather-settings-panel-title {
+        text-align: center;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    /* Les cartes de la colonne de droite peuvent être un peu moins paddées */
+    .app-weather-settings-advanced-card {
+        padding: 25px;
+    }
+
+    /* On s'assure que les sections de gauche (unités) restent bien */
+    .app-weather-settings-unit-section {
+        padding: 15px;
+    }
+}
+
+/* --- Mobile (max-width: 500px) --- */
+@media (max-width: 500px) {
+
+    /* Ajustement des boutons d'unités pour les petits écrans */
+    .app-weather-settings-unit-buttons-wrapper {
+        /* S'assure que l'ensemble des boutons utilise tout l'espace */
+        flex-wrap: wrap; /* Permet aux boutons de passer à la ligne */
+        justify-content: space-around; /* Distribue l'espace entre les boutons */
+        gap: 10px; /* Ajoute un peu plus d'espace entre les boutons */
+    }
+
+    .app-weather-settings-unit-button {
+        flex-grow: 1; /* Permet aux boutons de s'étirer */
+        min-width: 100px; /* Taille minimale pour qu'ils soient cliquables */
+        padding: 10px 8px; /* Padding ajusté */
+    }
+
+    /* Les titres des cartes de droite sont légèrement ajustés */
+    .app-weather-settings-advanced-title {
+        font-size: 1.8rem;
+    }
+
+    .app-weather-settings-price {
+        font-size: 2rem;
+    }
+
+    /* On retire les box-shadows des sections/cartes pour un look plus plat sur mobile */
+    .app-weather-settings-unit-section,
+    .app-weather-settings-advanced-card,
+    .app-weather-settings-newsletter-card {
+        box-shadow: none;
+    }
+}
